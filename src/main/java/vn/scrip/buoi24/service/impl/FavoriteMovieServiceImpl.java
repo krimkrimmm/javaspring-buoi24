@@ -22,32 +22,37 @@ public class FavoriteMovieServiceImpl implements FavoriteMovieService {
 
     @Override
     public Optional<FavoriteMovie> findByUserIdAndMovieId(Integer userId, Integer movieId) {
+        // Tìm kiếm phim yêu thích theo userId và movieId
         return favoriteMovieRepository.findByUserIdAndMovieId(userId, movieId);
     }
 
     @Override
     public void addFavoriteMovie(Integer userId, Integer movieId) {
+        // Kiểm tra nếu chưa có trong danh sách yêu thích thì thêm vào
         if (favoriteMovieRepository.findByUserIdAndMovieId(userId, movieId).isEmpty()) {
             FavoriteMovie favoriteMovie = new FavoriteMovie();
-            favoriteMovie.setUser(User.builder().id(userId).build());
-            favoriteMovie.setMovie(Movie.builder().id(movieId).build());
-            favoriteMovieRepository.save(favoriteMovie);
+            favoriteMovie.setUser(User.builder().id(userId).build()); // Tạo đối tượng User với ID
+            favoriteMovie.setMovie(Movie.builder().id(movieId).build()); // Tạo đối tượng Movie với ID
+            favoriteMovieRepository.save(favoriteMovie); // Lưu vào repository
         }
     }
 
     @Override
     public void removeFavoriteMovie(Integer userId, Integer movieId) {
+        // Tìm kiếm phim yêu thích và xóa
         favoriteMovieRepository.findByUserIdAndMovieId(userId, movieId)
-                .ifPresent(favoriteMovieRepository::delete);
+                .ifPresent(favoriteMovieRepository::delete); // Nếu tìm thấy thì xóa
     }
 
     @Override
     public boolean isFavorite(User user, Movie movie) {
+        // Kiểm tra xem phim có phải là yêu thích của user không
         return favoriteMovieRepository.findByUserIdAndMovieId(user.getId(), movie.getId()).isPresent();
     }
 
     @Override
     public void toggleFavorite(User user, Movie movie) {
+        // Chuyển đổi trạng thái yêu thích (thêm hoặc xóa)
         if (isFavorite(user, movie)) {
             removeFavoriteMovie(user.getId(), movie.getId());
         } else {
@@ -57,7 +62,8 @@ public class FavoriteMovieServiceImpl implements FavoriteMovieService {
 
     @Override
     public List<Movie> getFavoritesByUser(User user) {
+        // Lấy danh sách các phim yêu thích của user
         List<FavoriteMovie> favorites = favoriteMovieRepository.findAllByUserId(user.getId());
-        return favorites.stream().map(FavoriteMovie::getMovie).collect(Collectors.toList());
+        return favorites.stream().map(FavoriteMovie::getMovie).collect(Collectors.toList()); // Chuyển đổi thành danh sách Movie
     }
 }

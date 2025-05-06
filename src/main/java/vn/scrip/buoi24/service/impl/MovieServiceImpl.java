@@ -20,13 +20,13 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> findHotMovies(boolean isHot, int limit) {
-        // TODO: Triển khai sau nếu cần
+        // Triển khai sau nếu cần
         return null;
     }
 
     @Override
     public Page<Movie> findByType(MovieType type, boolean isActive, int page, int pageSize) {
-        // TODO: Triển khai sau nếu cần
+        // Triển khai sau nếu cần
         return null;
     }
 
