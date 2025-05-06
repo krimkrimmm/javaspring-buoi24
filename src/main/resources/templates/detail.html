@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Chi tiết phim</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-dark text-white">
+            <h2 th:text="${movie.title}">Tiêu đề phim</h2>
+        </div>
+        <div class="card-body">
+            <p><strong>Thể loại:</strong> <span th:text="${movie.genre}">Thể loại</span></p>
+            <p><strong>Năm phát hành:</strong> <span th:text="${movie.year}">Năm</span></p>
+            <p><strong>Mô tả:</strong></p>
+            <p th:text="${movie.description}">Mô tả phim...</p>
+
+            <!-- Nút yêu thích -->
+            <div th:if="${#authentication.authenticated}">
+                <form th:action="@{'/movie/' + ${movie.id} + '/favorite'}" method="post">
+                    <button type="submit" class="btn" th:classappend="${isFavorite} ? 'btn-warning' : 'btn-outline-warning'">
+                        <span th:if="${isFavorite}">💛 Bỏ yêu thích</span>
+                        <span th:if="${!isFavorite}">🤍 Thêm vào yêu thích</span>
+                    </button>
+                </form>
+            </div>
+            <div th:if="${!#authentication.authenticated}">
+                <p class="text-muted">Hãy <a th:href="@{/login}">đăng nhập</a> để thêm phim vào danh sách yêu thích.</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
