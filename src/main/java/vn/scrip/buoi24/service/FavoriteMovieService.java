@@ -1,9 +1,15 @@
 package vn.scrip.buoi24.service;
-import vn.scrip.buoi24.entity.Movie;
-import vn.scrip.buoi24.entity.User;
+
+import vn.scrip.buoi24.entity.FavoriteMovie;
+
+import java.util.Optional;
 
 public interface FavoriteMovieService {
-    boolean isFavorite(User user, Movie movie);
-    void addFavorite(User user, Movie movie);
-    void removeFavorite(User user, Movie movie);
+
+    // Tìm FavoriteMovie theo userId và movieId
+    Optional<FavoriteMovie> findByUserIdAndMovieId(Integer userId, Integer movieId);
+
+    // Thêm, xóa phim yêu thích
+    void addFavoriteMovie(Integer userId, Integer movieId);
+    void removeFavoriteMovie(Integer userId, Integer movieId);
 }

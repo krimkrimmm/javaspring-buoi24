@@ -1,36 +1,31 @@
 package vn.scrip.buoi24.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vn.scrip.buoi24.entity.FavoriteMovie;
-import vn.scrip.buoi24.entity.Movie;
-import vn.scrip.buoi24.entity.User;
 import vn.scrip.buoi24.repository.FavoriteMovieRepository;
 import vn.scrip.buoi24.service.FavoriteMovieService;
 
+import java.util.Optional;
+
 @Service
-@RequiredArgsConstructor
 public class FavoriteMovieServiceImpl implements FavoriteMovieService {
 
-    private final FavoriteMovieRepository favoriteMovieRepository;
+    @Autowired
+    private FavoriteMovieRepository favoriteMovieRepository;
 
     @Override
-    public boolean isFavorite(User user, Movie movie) {
-        return favoriteMovieRepository.existsByUserAndMovie(user, movie);
+    public Optional<FavoriteMovie> findByUserIdAndMovieId(Integer userId, Integer movieId) {
+        return favoriteMovieRepository.findByUserIdAndMovieId(userId, movieId);
     }
 
     @Override
-    public void addFavorite(User user, Movie movie) {
-        if (!isFavorite(user, movie)) {
-            FavoriteMovie favorite = new FavoriteMovie();
-            favorite.setUser(user);
-            favorite.setMovie(movie);
-            favoriteMovieRepository.save(favorite);
-        }
+    public void addFavoriteMovie(Integer userId, Integer movieId) {
+        // Logic thêm phim yêu thích
     }
 
     @Override
-    public void removeFavorite(User user, Movie movie) {
-        favoriteMovieRepository.deleteByUserAndMovie(user, movie);
+    public void removeFavoriteMovie(Integer userId, Integer movieId) {
+        // Logic xóa phim yêu thích
     }
 }

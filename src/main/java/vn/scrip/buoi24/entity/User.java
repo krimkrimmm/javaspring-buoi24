@@ -18,4 +18,5 @@ public class User {
     private String password;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Favorite> favorites;
+    private List<FavoriteMovie> favoriteMovies;
 }
