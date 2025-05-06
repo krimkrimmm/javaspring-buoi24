@@ -9,5 +9,6 @@ import java.util.List;
 public interface MovieService {
     List<Movie> findHotMovies(boolean isHot, int limit);
     Page<Movie> findByType(MovieType type, boolean isActive, int page, int pageSize);
-    Movie findMovieDetails(Integer id, String slug); // Phương thức lấy chi tiết phim
+    Movie findMovieDetails(Integer id, String slug);
+    Movie findById(Integer id); // BỔ SUNG HÀM NÀY CHO KHỚP CONTROLLER
 }

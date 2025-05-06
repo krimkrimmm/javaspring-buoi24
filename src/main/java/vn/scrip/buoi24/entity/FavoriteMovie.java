@@ -1,30 +1,30 @@
 package vn.scrip.buoi24.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+
 
 @Entity
-@Table(name = "favorite_movies", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"user_id", "movie_id"})
-})
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class FavoriteMovie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "movie_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "movie_id")
     private Movie movie;
-
-
 }
+
+
+
+
+

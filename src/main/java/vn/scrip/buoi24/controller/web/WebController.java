@@ -1,7 +1,6 @@
 package vn.scrip.buoi24.controller.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,42 +8,42 @@ import vn.scrip.buoi24.entity.Movie;
 import vn.scrip.buoi24.entity.User;
 import vn.scrip.buoi24.service.FavoriteMovieService;
 import vn.scrip.buoi24.service.MovieService;
+import vn.scrip.buoi24.service.UserService;
+
+import java.security.Principal;
 
 @Controller
-@RequestMapping("/movie")
+@RequiredArgsConstructor
 public class WebController {
 
-    @Autowired
-    private MovieService movieService;
+    private final UserService userService;
+    private final MovieService movieService;
+    private final FavoriteMovieService favoriteMovieService;
 
-    @Autowired
-    private FavoriteMovieService favoriteMovieService;
+    @PostMapping("/movie/{id}/favorite")
+    public String toggleFavorite(@PathVariable Integer id, Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        Movie movie = movieService.findById(id);
+        favoriteMovieService.toggleFavorite(user, movie);
+        return "redirect:/movie/" + id;
+    }
 
-    @GetMapping("/detail/{movieId}/{slug}")
-    public String movieDetail(@PathVariable Integer movieId, @PathVariable String slug, Model model) {
-        // Lấy thông tin chi tiết phim
-        Movie movie = movieService.findMovieDetails(movieId, slug);
+    @GetMapping("/user/favorites")
+    public String showFavorites(Model model, Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        model.addAttribute("favorites", favoriteMovieService.getFavoritesByUser(user));
+        return "user/favorites";
+    }
+
+    @GetMapping("/movie/{id}")
+    public String movieDetail(@PathVariable Integer id, Model model, Principal principal) {
+        Movie movie = movieService.findById(id);
         model.addAttribute("movie", movie);
-
-        // Kiểm tra nếu người dùng đang đăng nhập và có phim yêu thích
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        boolean isFavorite = favoriteMovieService.findByUserIdAndMovieId(user.getId(), movieId).isPresent();
-        model.addAttribute("isFavorite", isFavorite);
-
-        return "movieDetail"; // Trang chi tiết phim
-    }
-
-    @PostMapping("/favorite/{movieId}")
-    public String addFavoriteMovie(@PathVariable Integer movieId) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        favoriteMovieService.addFavoriteMovie(user.getId(), movieId);
-        return "redirect:/movie/detail/" + movieId;
-    }
-
-    @PostMapping("/unfavorite/{movieId}")
-    public String removeFavoriteMovie(@PathVariable Integer movieId) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        favoriteMovieService.removeFavoriteMovie(user.getId(), movieId);
-        return "redirect:/movie/detail/" + movieId;
+        if (principal != null) {
+            User user = userService.findByUsername(principal.getName());
+            boolean isFavorite = favoriteMovieService.isFavorite(user, movie);
+            model.addAttribute("isFavorite", isFavorite);
+        }
+        return "movie/detail";
     }
 }
