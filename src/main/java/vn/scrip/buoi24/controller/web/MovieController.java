@@ -1,4 +1,4 @@
-package vn.scrip.buoi24.controller;
+package vn.scrip.buoi24.controller.web;
 
 import vn.scrip.buoi24.entity.Movie;
 import vn.scrip.buoi24.service.MovieService;

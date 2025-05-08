@@ -1,24 +1,28 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title th:text="${movie.title}">Chi tiết phim</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <script th:src="@{/js/movie-detail.js}"></script>
 </head>
 <body>
+<header>
+    <h1 th:text="${movie.title}">Tiêu đề phim</h1>
+</header>
+<main>
+    <div class="movie-detail">
+        <img th:src="${movie.posterUrl}" th:alt="${movie.title}">
 
-<h1 th:text="${movie.title}">Tên phim</h1>
-<p>Slug: <span th:text="${movie.slug}"></span></p>
-
-<!-- Nút "Yêu thích" hiển thị khi người dùng đã đăng nhập -->
-<div th:if="${#authorization.expression('isAuthenticated()')}">
-    <form th:action="@{/favorite/add/{movieId}(movieId=${movie.id})}" method="post">
-        <button type="submit">❤️ Thêm vào yêu thích</button>
-    </form>
-</div>
-
-<!-- Nếu chưa đăng nhập thì hiển thị thông báo -->
-<div th:unless="${#authorization.expression('isAuthenticated()')}">
-    <p><a th:href="@{/login}">Đăng nhập</a> để thêm phim vào danh sách yêu thích</p>
-</div>
-
+        <p><strong>Năm:</strong> <span th:text="${movie.year}">2023</span></p>
+        <p><strong>Mô tả:</strong> <span th:text="${movie.description}">Mô tả phim</span></p>
+        <form th:action="@{'/movie/' + ${movie.id} + '/' + ${movie.slug} + '/favorite'}" method="post">
+            <button type="submit" th:text="${isFavorite} ? 'Bỏ yêu thích' : 'Yêu thích'">Yêu thích</button>
+        </form>
+    </div>
+</main>
 </body>
 </html>
+
+
