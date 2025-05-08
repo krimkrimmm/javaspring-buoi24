@@ -1,75 +1,62 @@
 package vn.scrip.buoi24.entity;
 
-import vn.scrip.buoi24.model.enums.MovieType;
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDateTime;
-import java.util.List;
-@ToString
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
-@Table(name = "movies")
 public class Movie {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
-    @Column(nullable = false)
-    String name;
-    String slug;
+    private Integer id;
 
-    @Column(columnDefinition = "TEXT")
-    String description;
-    String thumbnail;
-    Integer releaseYear;
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "slug", unique = true) // Make sure the slug is unique
+    private String slug;
+
     @Column(name = "is_active")
-    Boolean isActive;
-    @Column(name = "is_hot")
-    Boolean isHot;
-    String trailer;
+    private boolean isActive;
 
-    @Column(columnDefinition = "double default 5.0")
-    Double rating;
+    // Other fields, like description, director, etc.
 
-    @Enumerated(EnumType.STRING)
-    MovieType type;
+    // Getters and Setters
 
-    LocalDateTime createdAt;
-    LocalDateTime updatedAt;
-    LocalDateTime publishedAt;
+    public Integer getId() {
+        return id;
+    }
 
-    @ManyToOne
-    @JoinColumn(name = "country_id")
-    Country country;
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-    @ManyToMany
-    @JoinTable(
-            name = "movies_genres",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id")
-    )
-    List<Genre> genres;
+    public String getTitle() {
+        return title;
+    }
 
-    @ManyToMany
-    @JoinTable(
-            name = "movies_actors",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "actor_id")
-    )
-    List<Actor> actors;
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    @ManyToMany
-    @JoinTable(
-            name = "movies_directors",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "director_id")
-    )
-    List<Director> directors;
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
+    // Additional fields and methods if needed
 }

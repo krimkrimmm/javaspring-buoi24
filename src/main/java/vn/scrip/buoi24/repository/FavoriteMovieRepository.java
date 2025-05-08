@@ -8,6 +8,6 @@ import vn.scrip.buoi24.entity.User;
 import java.util.Optional;
 
 public interface FavoriteMovieRepository extends JpaRepository<FavoriteMovie, Integer> {
-    Optional<FavoriteMovie> findByUserAndMovie(User user, Movie movie);
-    void deleteByUserAndMovie(User user, Movie movie);
+    void deleteByUserIdAndMovieId(Integer userId, Integer movieId);
+    boolean existsByUserIdAndMovieId(Integer userId, Integer movieId);
 }

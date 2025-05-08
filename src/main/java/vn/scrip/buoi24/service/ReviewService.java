@@ -22,6 +22,11 @@ public class ReviewService {
         return reviewRepository.save(review);
     }
 
+    // ✅ Tạo review mới (thêm phương thức này)
+    public Review createReview(Review review) {
+        return addReview(review);
+    }
+
     // ✅ Cập nhật review
     public Review updateReview(Integer id, Review updatedReview) {
         Optional<Review> existingReview = reviewRepository.findById(id);

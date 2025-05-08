@@ -1,27 +1,31 @@
 package vn.scrip.buoi24.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vn.scrip.buoi24.entity.Movie;
 import vn.scrip.buoi24.repository.MovieRepository;
 import vn.scrip.buoi24.service.MovieService;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class MovieServiceImpl implements MovieService {
 
-    private final MovieRepository movieRepository;
+    @Autowired
+    private MovieRepository movieRepository;
 
     @Override
-    public List<Movie> findAll() {
-        return movieRepository.findAll();
+    public Optional<Movie> getMovieById(Integer id) {
+        return movieRepository.findById(id);
     }
 
     @Override
-    public Movie findById(Integer id) {
-        return movieRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
+    public Optional<Movie> getMovieByIdSlugAndIsActive(Integer id, String slug, boolean isActive) {
+        return movieRepository.findByIdAndSlugAndIsActive(id, slug, isActive);
+    }
+
+    @Override
+    public Optional<Movie> getMovieBySlugAndActive(String slug, boolean isActive) {
+        return movieRepository.findBySlugAndIsActive(slug, isActive);  // Cập nhật phương thức này
     }
 }

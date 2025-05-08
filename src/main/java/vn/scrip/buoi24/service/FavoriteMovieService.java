@@ -1,9 +1,12 @@
 package vn.scrip.buoi24.service;
 
-import vn.scrip.buoi24.entity.Movie;
 import vn.scrip.buoi24.entity.User;
 
 public interface FavoriteMovieService {
-    boolean isFavorite(User user, Movie movie);
-    void toggleFavorite(User user, Movie movie);
+
+    void addFavoriteMovie(User user, Integer movieId);
+
+    void removeFavoriteMovie(User user, Integer movieId);
+
+    boolean isFavoriteMovie(Integer movieId);
 }

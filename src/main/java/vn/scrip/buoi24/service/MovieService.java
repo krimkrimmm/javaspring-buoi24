@@ -1,10 +1,12 @@
 package vn.scrip.buoi24.service;
 
 import vn.scrip.buoi24.entity.Movie;
-
-import java.util.List;
+import java.util.Optional;
 
 public interface MovieService {
-    List<Movie> findAll();
-    Movie findById(Integer id);
+    Optional<Movie> getMovieById(Integer id);
+
+    Optional<Movie> getMovieByIdSlugAndIsActive(Integer id, String slug, boolean isActive);
+
+    Optional<Movie> getMovieBySlugAndActive(String slug, boolean isActive);  // Thêm phương thức này
 }
