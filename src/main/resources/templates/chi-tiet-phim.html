@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Chi tiết phim</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <title th:text="${movie.title}">Chi tiết phim</title>
 </head>
 <body>
+
 <h1 th:text="${movie.title}">Tên phim</h1>
+<p>Slug: <span th:text="${movie.slug}"></span></p>
 
-<p><strong>Thể loại:</strong> <span th:text="${movie.genre}"></span></p>
-<p><strong>Mô tả:</strong> <span th:text="${movie.description}"></span></p>
+<!-- Nút "Yêu thích" hiển thị khi người dùng đã đăng nhập -->
+<div th:if="${#authorization.expression('isAuthenticated()')}">
+    <form th:action="@{/favorite/add/{movieId}(movieId=${movie.id})}" method="post">
+        <button type="submit">❤️ Thêm vào yêu thích</button>
+    </form>
+</div>
 
-<form th:action="@{'/movies/' + ${movie.id} + '/favorite'}" method="post">
-    <button type="submit">
-        <span th:text="${isFavorite} ? '❤️ Bỏ yêu thích' : '🤍 Yêu thích'"></span>
-    </button>
-</form>
+<!-- Nếu chưa đăng nhập thì hiển thị thông báo -->
+<div th:unless="${#authorization.expression('isAuthenticated()')}">
+    <p><a th:href="@{/login}">Đăng nhập</a> để thêm phim vào danh sách yêu thích</p>
+</div>
 
-<a th:href="@{/}">← Quay lại trang chủ</a>
 </body>
 </html>
