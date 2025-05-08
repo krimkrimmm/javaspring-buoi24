@@ -1,53 +1,27 @@
 package vn.scrip.buoi24.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import vn.scrip.buoi24.entity.Movie;
-import vn.scrip.buoi24.exception.NotFoundException;
 import vn.scrip.buoi24.repository.MovieRepository;
 import vn.scrip.buoi24.service.MovieService;
-import vn.scrip.buoi24.model.enums.MovieType;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class MovieServiceImpl implements MovieService {
 
-    @Autowired
-    private MovieRepository movieRepository;
+    private final MovieRepository movieRepository;
 
     @Override
-    public List<Movie> findHotMovies(boolean isHot, int limit) {
-        // Triển khai sau nếu cần
-        return null;
-    }
-
-    @Override
-    public Page<Movie> findByType(MovieType type, boolean isActive, int page, int pageSize) {
-        // Triển khai sau nếu cần
-        return null;
-    }
-
-    @Override
-    public Movie findMovieDetails(Integer id, String slug) {
-        Optional<Movie> movie = movieRepository.findById(id);
-        if (movie.isPresent()) {
-            Movie m = movie.get();
-            if (m.getSlug().equals(slug)) {
-                return m;
-            } else {
-                throw new RuntimeException("Movie slug does not match!");
-            }
-        } else {
-            throw new RuntimeException("Movie not found with id " + id);
-        }
+    public List<Movie> findAll() {
+        return movieRepository.findAll();
     }
 
     @Override
     public Movie findById(Integer id) {
         return movieRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Không tìm thấy phim với ID: " + id));
+                .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
     }
 }

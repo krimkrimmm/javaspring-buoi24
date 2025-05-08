@@ -26,6 +26,13 @@
 			<artifactId>slugify</artifactId>
 			<version>3.0.7</version>
 		</dependency>
+		<!-- Remove javax.servlet and add jakarta.servlet dependency -->
+		<dependency>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<version>5.0.0</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.github.javafaker</groupId>
 			<artifactId>javafaker</artifactId>
